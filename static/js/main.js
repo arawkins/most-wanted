@@ -15,8 +15,19 @@ var model = {
     changeState: function(newState) {
         if (newState == 'list' || newState == 'create') {
             this.state(newState);
+            if (this.state() == 'list') {
+                var current_client = $("#client_selector").val();
+            }
         } else {
             console.log("invalid state " + newState);
+        }
+    },
+    getActiveClientData: function() {
+        var self = this;
+        if (self.activeClient() != '') {
+            $.get( "get/"+self.activeClient(), function( data ) {
+                self.featureRequests(data);
+            });
         }
     }
 };
@@ -25,6 +36,7 @@ ko.applyBindings(model);
 
 $('#client_selector').change(function(e) {
     if (e.target.value != undefined && e.target.value != '') {
+
         $.get( "get/"+e.target.value, function( data ) {
             model.featureRequests(data);
         });
@@ -33,8 +45,12 @@ $('#client_selector').change(function(e) {
     }
 });
 
-$("new_request_form form").submit(function() {
-
+$("#new_request_form form").submit(function(e) {
+    $.post('/create/', $(this).serialize(), function(data) {
+        model.getActiveClientData();
+        model.changeState('list');
+    });
+    e.preventDefault();
 });
 
 $(function(){

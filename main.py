@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, jsonify
+from wtforms import Form, DateField, StringField, IntegerField, validators
 
 app = Flask(__name__)
 feature_requests = [
@@ -52,17 +53,38 @@ feature_requests = [
     },
 ]
 
+class FeatureRequestForm(Form):
+    title = StringField('Title',[validators.InputRequired()])
+    description = StringField('Description',[validators.InputRequired()])
+    client = StringField('Client',[validators.InputRequired()])
+    priority = IntegerField('Priority',[validators.InputRequired(), validators.NumberRange(min=1)])
+    target_date = DateField('Target Date', [validators.InputRequired()], format='%m-%d-%Y')
+    product_area = StringField('Product Area',[validators.InputRequired()])
 
 @app.route("/")
 def index():
     return render_template("index.html")
 
-@app.route("/create/",methods=['POST'])
+@app.route("/create/", methods=['POST'])
 def create():
     if request.method == 'POST':
-        return "create request"
+        form = FeatureRequestForm(request.form)
+        if request.method == 'POST' and form.validate():
+            new_request = {
+                'title': form.title.data,
+                'description': form.description.data,
+                'client': form.client.data,
+                'priority': form.priority.data,
+                'target_date': form.target_date.data,
+                'product_area': form.product_area.data
+            }
+            feature_requests.append(new_request)
+            return "success"
+        else:
+            print(form.errors)
+            return "invalid form"
     else:
-        return "no data submitted"
+        return "no data provided"
 
 @app.route("/get/<client_name>")
 def get(client_name=''):

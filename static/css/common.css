@@ -26,6 +26,10 @@ h2 {
     padding:1em 0;
 }
 
+#new_request_form textarea {
+    min-height:200px;
+}
+
 .feature_request {
     margin:0 0 2em 0;
 }
