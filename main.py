@@ -1,6 +1,4 @@
-from flask import Flask
-from flask import request
-from flask import render_template
+from flask import Flask, request, render_template, jsonify
 
 app = Flask(__name__)
 
@@ -14,3 +12,17 @@ def create():
         return "create request"
     else:
         return "no data submitted"
+
+@app.route("/get/<client_name>")
+def get(client_name):
+    client_requests = [
+        {
+            "title":"Make Web App",
+            "description": "Hopefully this doesn't take too long",
+        },
+        {
+            "title":"Make Web App Again",
+            "description": "Two are better than one (most of the time)",
+        },
+    ]
+    return jsonify(client_requests)

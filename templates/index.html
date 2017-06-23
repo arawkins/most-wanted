@@ -2,13 +2,41 @@
 <html>
 
     <head>
-        <title>Most Wanted</title>
+        <title>IWS Feature Request System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
 
     <body>
-        <h1>Most Wanted</h1>
-        <p>Submit a Feature Request</p>
+        <header>
+            <h1>IWS Feature Request System</h1>
+        </header>
+        <p>Please select a client:</p>
+
+        <form id="client_selector"  action="">
+            <select data-bind="options: clients, optionsCaption: 'Choose a client...', value:activeClient">
+
+            </select>
+        </form>
+
+        <div id="client_requests">
+            <h2 data-bind="text: activeClient"></h2>
+            <ul>
+            </ul>
+        </div>
+
+        <div id="new_request_form">
+
+        </div>
+        <script type='text/javascript' src='/static/js/jquery-3.2.1.min.js'></script>
+        <script type='text/javascript' src='/static/js/knockout-3.4.2.js'></script>
+
+        <script type="text/javascript">
+            var model = {
+                activeClient: ko.observable(''),
+                clients: ['Client A', 'Client B', 'Client C']
+            };
+            ko.applyBindings(model);
+        </script>
     </body>
 
 </html>
