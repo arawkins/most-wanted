@@ -1,5 +1,45 @@
+body {
+    background:#EEE;
+}
+
+h1 {
+    font-size:2.4em;
+}
+
+h2 {
+    font-size:2em;
+}
+
+#container {
+    width:96%;
+    max-width:800px;
+    padding:2%;
+    margin:1em auto;
+    background:#FFF;
+    border-radius:10px;
+    box-shadow:0 0 5px 5px #CCC;
+}
+
 #new_request_form {
-    border-top:1px solid grey;
+
     border-bottom:1px solid grey;
     padding:1em 0;
+}
+
+.feature_request {
+    margin:0 0 2em 0;
+}
+
+.feature_request h3 {
+    font-size:1.6em;
+}
+
+.feature_request .meta {
+    border-bottom:1px solid #CCC;
+    border-top:1px solid #CCC;
+}
+
+.feature_request h3, .feature_request p {
+    margin-bottom:0;
+    padding-bottom:0;
 }

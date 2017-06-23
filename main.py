@@ -1,7 +1,7 @@
 from flask import Flask, request, render_template, jsonify
 
 app = Flask(__name__)
-client_a_requests = [
+feature_requests = [
     {
         "title":"Make Web App",
         "description": "Hopefully this doesn't take too long",
@@ -18,9 +18,6 @@ client_a_requests = [
         "target_date":1505238965,
         "product_area":"Policies"
     },
-]
-
-client_b_requests = [
     {
         "title":"Cook a sandwich",
         "description": "Grilled Cheese if you please",
@@ -37,9 +34,6 @@ client_b_requests = [
         "target_date":1508349365,
         "product_area":"Billing"
     },
-]
-
-client_c_requests = [
     {
         "title":"Take over the world",
         "description": "The same thing we do every night.",
@@ -72,13 +66,9 @@ def create():
 
 @app.route("/get/<client_name>")
 def get(client_name=''):
-
     client_requests = []
-    if client_name == 'client_a':
-        client_requests = client_a_requests
-    elif client_name == 'client_b':
-        client_requests = client_b_requests
-    elif client_name == 'client_c':
-        client_requests = client_c_requests
+    for req in feature_requests:
+        if req['client'] == client_name:
+            client_requests.append(req)
 
     return jsonify(client_requests)

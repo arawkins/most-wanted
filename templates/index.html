@@ -4,64 +4,94 @@
     <head>
         <title>IWS Feature Request System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/css/foundation.min.css">
+        <link rel="stylesheet" href="/static/css/foundation-datepicker.min.css">
         <link rel="stylesheet" href="/static/css/common.css">
     </head>
 
     <body>
-        <header>
-            <h1>IWS Feature Request System</h1>
-        </header>
-        <form action="">
-            <select id="client_selector" data-bind="options: clients, optionsText: 'name', optionsValue: 'value', optionsCaption: 'Select a client...', value:activeClient"></select>
-        </form>
+        <div id="container">
+            <header>
+                <h1>IWS Feature Request System</h1>
+            </header>
+            <form action="">
+                <select id="client_selector" data-bind="options: clients, optionsText: 'name', optionsValue: 'value', optionsCaption: 'Select a client...', value:activeClient"></select>
+            </form>
 
-        <div id="client_requests" data-bind="foreach: featureRequests, visible: activeClient">
-            <div class="feature_request">
-                <h3 data-bind="text: title"></h3>
-                <p class="target_date" data-bind="text: target_date"></p>
-                <p>Priority: <span class="priority" data-bind="text: priority"></span></p>
-                <p>Product Area: <span class="product_area" data-bind="text: product_area"></span></p>
-                <p class="description" data-bind="text: description"></p>
+            <div id="client_requests" data-bind="visible: activeClient() && state() == 'list'">
+
+                <h2>Current Requests</h2>
+
+                <div id="feature_request_list" data-bind="foreach: featureRequests">
+                    <div class="feature_request">
+                        <h3 data-bind="text: title"></h3>
+                        <div class="row meta collapse">
+                            <div class="column small-12 medium-4">
+                                <p class="target_date"><strong>Target Date:</strong><span data-bind="text: target_date"></span></p>
+                            </div>
+                            <div class="column small-12 medium-4">
+                                <p class="priority"><strong>Priority:</strong><span data-bind="text: priority"></span></p>
+                            </div>
+                            <div class="column small-12 medium-4">
+                                <p><strong>Product Area:</strong> <span class="product_area" data-bind="text: product_area"></span></p>
+                            </div>
+                        </div>
+
+                        <p class="description" data-bind="text: description"></p>
+                    </div>
+                </div>
+
+                <p><button type="button" class="button" data-bind="click: changeState.bind($data, 'create')">Add New Feature Request &raquo;</button></p>
 
             </div>
-        </div>
 
-        <div id="new_request_form" data-bind="visible: activeClient">
-            <form action="create/" method="POST">
-                <input type="submit" name="submit" value="Submit">
-            </form>
-        </div>
+            <div id="new_request_form" data-bind="visible: activeClient() && state() == 'create'">
+                <h2>Create New Feature Request</h2>
+                <form action="create/" method="POST">
 
+                    <input type="hidden" name="client" data-bind="value: activeClient">
+
+                    <div class="row column">
+                        <label>Title
+                            <input type="text" name="title" value="">
+                        </label>
+                    </div>
+
+                    <div class="row column">
+                        <label>Description
+                            <textarea name="description"></textarea>
+                        </label>
+                    </div>
+
+                    <div class="row">
+                        <div class="column small-12 medium-4">
+                            <label>Priority
+                                <input type="number" value="1">
+                            </label>
+                        </div>
+
+                        <div class="column small-12 medium-4">
+                            <label>Product Area
+                                <select data-bind="options:product_areas"></select>
+                            </label>
+                        </div>
+
+                        <div class="column small-12 medium-4">
+                            <label>Target Date
+                                <input type="datetime" id="target_date" name="target_date">
+                            </label>
+                        </div>
+                    </div>
+                    <button class="button secondary" type="button" data-bind="click: changeState.bind($data, 'list')">&laquo; Cancel</button>
+                    <input type="submit" name="submit" value="Submit &raquo;" class="button success">
+                </form>
+            </div>
+        </div><!-- end #container -->
         <script type='text/javascript' src='/static/js/jquery-3.2.1.min.js'></script>
+        <script type='text/javascript' src='/static/js/foundation.min.js'></script>
+        <script type='text/javascript' src='/static/js/foundation-datepicker.min.js'></script>
         <script type='text/javascript' src='/static/js/knockout-3.4.2.js'></script>
-
-        <script type="text/javascript">
-            // Class to represent a row in the seat reservations grid
-            var model = {
-                activeClient: ko.observable(''),
-                clients: [
-                    {'name':'Client A', 'value':'client_a'},
-                    {'name':'Client B', 'value':'client_b'},
-                    {'name':'Client C', 'value':'client_c'}
-                ],
-                featureRequests: ko.observableArray([]),
-                addRequest: function() {
-                    this.featureRequests.push({'title':'request'+(this.featureRequests().length+1)});
-                }
-            };
-
-            ko.applyBindings(model);
-
-            $('#client_selector').change(function(e) {
-                if (e.target.value != undefined && e.target.value != '') {
-                    $.get( "get/"+e.target.value, function( data ) {
-                        model.featureRequests(data);
-                    });
-                } else {
-                    model.featureRequests([]);
-                }
-            });
-        </script>
+        <script type="text/javascript" src='/static/js/main.js'></script>
     </body>
 
 </html>
