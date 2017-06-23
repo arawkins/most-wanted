@@ -4,38 +4,55 @@
     <head>
         <title>IWS Feature Request System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="/static/css/common.css">
     </head>
 
     <body>
         <header>
             <h1>IWS Feature Request System</h1>
         </header>
-        <p>Please select a client:</p>
-
-        <form id="client_selector"  action="">
-            <select data-bind="options: clients, optionsCaption: 'Choose a client...', value:activeClient">
-
-            </select>
+        <form action="">
+            <select id="client_selector" data-bind="options: clients, optionsText: 'name', optionsValue: 'value', optionsCaption: 'Select a client...', value:activeClient"></select>
         </form>
 
         <div id="client_requests">
-            <h2 data-bind="text: activeClient"></h2>
-            <ul>
+            <ul data-bind="foreach: featureRequests">
+                <li data-bind="text: title"></li>
             </ul>
         </div>
 
         <div id="new_request_form">
-
+            <button data-bind="click: addRequest">Add New Request</button>
         </div>
+
         <script type='text/javascript' src='/static/js/jquery-3.2.1.min.js'></script>
         <script type='text/javascript' src='/static/js/knockout-3.4.2.js'></script>
 
         <script type="text/javascript">
+            // Class to represent a row in the seat reservations grid
             var model = {
                 activeClient: ko.observable(''),
-                clients: ['Client A', 'Client B', 'Client C']
+                clients: [
+                    {'name':'Client A', 'value':'client_a'},
+                    {'name':'Client B', 'value':'client_b'},
+                    {'name':'Client C', 'value':'client_c'}
+                ],
+                featureRequests: ko.observableArray([]),
+                addRequest: function() {
+                    this.featureRequests.push({'title':'request'+(this.featureRequests().length+1)});
+                }
             };
             ko.applyBindings(model);
+            
+            $('#client_selector').change(function(e) {
+                if (e.target.value != undefined && e.target.value != '') {
+                    $.get( "get/"+e.target.value, function( data ) {
+                        model.featureRequests(data);
+                    });
+                } else {
+                    model.featureRequests([]);
+                }
+            });
         </script>
     </body>
 
