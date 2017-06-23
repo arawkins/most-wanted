@@ -15,14 +15,21 @@
             <select id="client_selector" data-bind="options: clients, optionsText: 'name', optionsValue: 'value', optionsCaption: 'Select a client...', value:activeClient"></select>
         </form>
 
-        <div id="client_requests">
-            <ul data-bind="foreach: featureRequests">
-                <li data-bind="text: title"></li>
-            </ul>
+        <div id="client_requests" data-bind="foreach: featureRequests, visible: activeClient">
+            <div class="feature_request">
+                <h3 data-bind="text: title"></h3>
+                <p class="target_date" data-bind="text: target_date"></p>
+                <p>Priority: <span class="priority" data-bind="text: priority"></span></p>
+                <p>Product Area: <span class="product_area" data-bind="text: product_area"></span></p>
+                <p class="description" data-bind="text: description"></p>
+
+            </div>
         </div>
 
-        <div id="new_request_form">
-            <button data-bind="click: addRequest">Add New Request</button>
+        <div id="new_request_form" data-bind="visible: activeClient">
+            <form action="create/" method="POST">
+                <input type="submit" name="submit" value="Submit">
+            </form>
         </div>
 
         <script type='text/javascript' src='/static/js/jquery-3.2.1.min.js'></script>
@@ -42,8 +49,9 @@
                     this.featureRequests.push({'title':'request'+(this.featureRequests().length+1)});
                 }
             };
+
             ko.applyBindings(model);
-            
+
             $('#client_selector').change(function(e) {
                 if (e.target.value != undefined && e.target.value != '') {
                     $.get( "get/"+e.target.value, function( data ) {
