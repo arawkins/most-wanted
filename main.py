@@ -88,3 +88,7 @@ def get(client_name=''):
         }
         to_return.append(new_request)
     return jsonify(to_return)
+
+
+if __name__ == '__main__':
+    app.run(debug=False,host='0.0.0.0')
