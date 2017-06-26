@@ -83,8 +83,11 @@
                             <div class="row">
                                 <div class="column small-12 medium-4">
                                     <label>Priority
-                                        <input type="number" name="priority" value="1" required>
-                                        <p class="help-text" id="priorityHelpText">A lower number means a higher priority (eg. priority #1 gets done before priority #2)</p>
+                                        <input type="number" name="priority" value="1" required data-validator="greater_than_zero">
+                                        <span class="form-error">
+                                            Must be greater than 1
+                                        </span>
+                                        <p class="help-text" id="priorityHelpText">A lower number means a higher priority (eg. priority #1 gets done before priority #2).</p>
                                     </label>
                                 </div>
 

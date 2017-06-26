@@ -1,4 +1,5 @@
 import os
+from datetime import date
 from flask import Flask, request, render_template, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy import asc
@@ -48,16 +49,19 @@ def create():
             new_request.client = form.client.data
             new_request.priority = form.priority.data
             new_request.product_area = form.product_area.data
+            new_request.target_date = form.target_date.data
 
-            # get current requests
             current_client_requests = FeatureRequest.query.filter_by(client=new_request.client).all()
+
+            if new_request.priority <= 0:
+                new_request.priority = 1
 
             if new_request.priority >= len(current_client_requests):
                 new_request.priority = len(current_client_requests) + 1
 
-            for req in current_client_requests:
-                if req.priority >= new_request.priority:
-                    req.priority += 1
+            for current_req in current_client_requests:
+                if current_req.priority >= new_request.priority:
+                    current_req.priority += 1
 
             db.session.add(new_request)
             db.session.commit()
@@ -79,7 +83,7 @@ def get(client_name=''):
             'description': req.description,
             'client': req.client,
             'priority': req.priority,
-            'target_date': req.target_date,
+            'target_date': req.target_date.strftime('%m/%d/%Y'),
             'product_area': req.product_area
         }
         to_return.append(new_request)

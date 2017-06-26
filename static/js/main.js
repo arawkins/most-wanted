@@ -71,3 +71,9 @@ $(function(){
         initialDate: nextWeek
 	});
 });
+
+Foundation.Abide.defaults.validators['greater_than_zero'] =
+function($el,required,parent) {
+    if (!required) return true;
+    return parseInt($el.val()) > 0;
+};
