@@ -27,6 +27,7 @@ var model = {
         if (self.activeClient() != '') {
             $.get( "get/"+self.activeClient(), function( data ) {
                 self.featureRequests(data);
+
             });
         }
     }
@@ -45,22 +46,28 @@ $('#client_selector').change(function(e) {
     }
 });
 
-$("#new_request_form form").submit(function(e) {
-    $.post('/create/', $(this).serialize(), function(data) {
+$("#new_request_form form").on("formvalid.zf.abide", function(ev,frm) {
+    $.post('/create/', $(frm).serialize(), function(data) {
         model.getActiveClientData();
-        model.changeState('list');
+        $("#client_requests_tab").click();
+        $("input[name='title']").val('');
+        $("textarea").val('');
     });
-    e.preventDefault();
-});
+}).on("submit", function(ev) {
+    ev.preventDefault();
+});;
+
 
 $(function(){
+    now = new Date();
+    var nextWeek = new Date(now.getFullYear(), now.getMonth(), now.getDate()+7);
 	$('#target_date').fdatepicker({
-		format: 'mm-dd-yyyy',
 		disableDblClickSelection: true,
 		leftArrow:'<<',
 		rightArrow:'>>',
 		closeIcon:'X',
-		closeButton: true
+		closeButton: true,
+        startDate: now,
+        initialDate: nextWeek
 	});
-
 });

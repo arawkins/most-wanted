@@ -5,9 +5,7 @@ from sqlalchemy import asc
 from wtforms import Form, DateField, StringField, IntegerField, validators
 
 app = Flask(__name__)
-basedir = os.path.abspath(os.path.dirname(__file__))
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'app.db')
-app.config['SQLALCHEMY_MIGRATE_REPO'] = os.path.join(basedir, 'db_repository')
+app.config.from_object('config')
 db = SQLAlchemy(app)
 feature_requests = []
 
@@ -31,7 +29,7 @@ class FeatureRequestForm(Form):
     description = StringField('Description',[validators.InputRequired()])
     client = StringField('Client',[validators.InputRequired()])
     priority = IntegerField('Priority',[validators.InputRequired(), validators.NumberRange(min=1)])
-    target_date = DateField('Target Date', [validators.InputRequired()], format='%m-%d-%Y')
+    target_date = DateField('Target Date', [validators.InputRequired()], format='%m/%d/%Y')
     product_area = StringField('Product Area',[validators.InputRequired()])
 
 
