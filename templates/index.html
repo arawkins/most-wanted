@@ -2,7 +2,7 @@
 <html>
 
     <head>
-        <title>IWS Feature Request System</title>
+        <title>Feature Request System</title>
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="/static/css/foundation.min.css">
         <link rel="stylesheet" href="/static/css/foundation-datepicker.min.css">
@@ -12,15 +12,16 @@
     <body>
         <div id="container">
             <header>
-                <h1>IWS Feature Request System</h1>
+                <h1>Feature Request System</h1>
             </header>
             <form action="">
                 <select id="client_selector" data-bind="options: clients, optionsText: 'name', optionsValue: 'value', optionsCaption: 'Select a client...', value:activeClient"></select>
             </form>
 
-            <div id="client_requests" data-bind="visible: activeClient() && state() == 'list'">
+            <div id="client_requests" data-bind="visible: activeClient() && state() == 'list', css: { hidden: false }" class="hidden">
 
                 <h2>Current Requests</h2>
+                <p data-bind="ifnot: featureRequests()">No requests found.</p>
 
                 <div id="feature_request_list" data-bind="foreach: featureRequests">
                     <div class="feature_request">
@@ -45,7 +46,7 @@
 
             </div>
 
-            <div id="new_request_form" data-bind="visible: activeClient() && state() == 'create'">
+            <div id="new_request_form" class="hidden" data-bind="visible: activeClient() && state() == 'create', css: { hidden: false }">
                 <h2>Create New Feature Request</h2>
                 <form action="create/" method="POST">
 

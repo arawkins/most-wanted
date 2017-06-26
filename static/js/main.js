@@ -62,4 +62,5 @@ $(function(){
 		closeIcon:'X',
 		closeButton: true
 	});
+
 });
