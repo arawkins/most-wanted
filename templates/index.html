@@ -28,7 +28,7 @@
                     <div id="client_requests" class="ko-hidden tabs-panel">
 
                         <h2>Current Requests</h2>
-                        <p data-bind="ifnot: featureRequests()">No requests found.</p>
+                        <p data-bind="if: featureRequests().length == 0">No requests found.</p>
 
                         <div id="feature_request_list" data-bind="foreach: featureRequests">
                             <div class="feature_request">
@@ -85,7 +85,7 @@
                                     <label>Priority
                                         <input type="number" name="priority" value="1" required data-validator="greater_than_zero">
                                         <span class="form-error">
-                                            Must be greater than 1
+                                            Must be greater than 0
                                         </span>
                                         <p class="help-text" id="priorityHelpText">A lower number means a higher priority (eg. priority #1 gets done before priority #2).</p>
                                     </label>
