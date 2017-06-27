@@ -25,4 +25,4 @@ python3 main.py
 You should find the app running at http://localhost:5000
 
 ### Using AWS Elastic Beanstalk
-You can quickly deploy this app to AWS Elasic Beanstalk as a single container docker application. When setting up the applicationy providing the Dockerrun.aws.json file to AWS as the source of your application. It will pull the image from docker hub and start the application for you.
+You can quickly deploy this app to AWS Elasic Beanstalk as a single container docker application. When setting up your application, provide the Dockerrun.aws.json file to AWS as the source of your application version. It will pull the image from docker hub and start the application for you.
