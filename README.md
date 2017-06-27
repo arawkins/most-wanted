@@ -1,7 +1,7 @@
 # Feature Request System
 
 This is a small demo feature request system.
-You can find an instance of it running online at (insert url here)
+You can find an instance of it [running online here](http://mostwanted-env.us-west-2.elasticbeanstalk.com/)
 
 ## How to run
 
